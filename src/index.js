@@ -4,8 +4,8 @@ const port = 3000;
 const morgan = require('morgan');
 const { engine } = require('express-handlebars');//Quản lý thư mục, source
 const path =require('path');//Thư viện sẵn có của node, lấy đường dẫn của index.js trong máy
-const route = require('./routes')//Import router từ file router/index.js
-
+const route = require('./routes');//Import router từ file router/index.js
+const db = require('./config/db');//Import mongoose db
 
 
 app.engine('hbs', engine(
@@ -18,7 +18,11 @@ app.use(morgan('combined'));//render ra giao thức HTTP
 
 app.use(express.static(path.join(__dirname,'public')));
 
+//Gọi router
 route(app);
+
+//Gọi data mongoose
+db.connect();
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
